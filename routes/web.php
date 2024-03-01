@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +19,8 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Auth::routes();
+// Activa la opción de verificación
+Auth::routes(['verify' => true]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Asegúrate de que la ruta /home use el middleware 'verified' para requerir verificación de correo electrónico
+Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('verified');
