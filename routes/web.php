@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ChangePasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,13 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 // Asegúrate de que la ruta /home use el middleware 'verified' para requerir verificación de correo electrónico
-Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('verified');
+Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware(['verified', 'forceChangePassword']);
+
+
+// Ruta para mostrar el formulario de cambio de contraseña
+Route::get('/password/change', function () {
+    return view('auth.passwords.change');
+})->name('password.change.view')->middleware('auth', 'forceChangePassword');
+
+// Ruta para procesar la solicitud de cambio de contraseña
+Route::post('/password/update', [ChangePasswordController::class, 'update'])->name('password.update');
