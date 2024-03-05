@@ -33,4 +33,4 @@ Route::get('/password/change', function () {
 })->name('password.change.view')->middleware('auth', 'forceChangePassword');
 
 // Ruta para procesar la solicitud de cambio de contraseña
-Route::post('/password/update', [ChangePasswordController::class, 'update'])->name('password.update');
+Route::post('/password/update', [ChangePasswordController::class, 'update'])->name('password.forceUpdate');
