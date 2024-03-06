@@ -8,7 +8,7 @@
                 <div class="card-header">Cambiar Contraseña</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('password.update') }}">
+                    <form method="POST" action="{{ route('password.forceUpdate') }}">
                         @csrf
 
                         <!-- Contraseña Actual -->
