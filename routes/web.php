@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,12 @@ Route::get('/password/change', function () {
 
 // Ruta para procesar la solicitud de cambio de contraseña
 Route::post('/password/update', [ChangePasswordController::class, 'update'])->name('password.forceUpdate');
+
+// Rutas para el módulo de usuarios
+Route::middleware(['is_admin'])->group(function () {
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::resource('users', UserController::class);
+});
+
+
+
