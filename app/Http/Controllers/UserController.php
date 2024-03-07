@@ -17,17 +17,36 @@ class UserController extends Controller
             return redirect()->route('home');
         }
 
-        $users = QueryBuilder::for(User::class)
-        ->allowedFilters(['name', 'email', 'roles.name']) // Asumiendo que tienes una relación 'roles'
-        ->paginate()
-        ->appends(request()->query());
+        // Iniciar la consulta de todos los usuarios
+        $query = User::query();
+
+        // Comprobar si se envió un término de búsqueda
+        if ($search = $request->input('search')) {
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%")
+                    ->orWhereHas('roles', function ($query) use ($search) {
+                        $query->where('name', 'LIKE', "%{$search}%");
+                    });
+            });
+        }
+
+        // Paginar los resultados
+        $users = $query->paginate()->appends(request()->query());
 
         return view('users.index', compact('users'));
+        
     }
 
     public function edit(User $user)
     {
         $roles = Role::all();
         return view('users.edit', compact('user', 'roles'));
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return redirect()->route('users.index')->with('success', 'Usuario eliminado con éxito.');
     }
 }
