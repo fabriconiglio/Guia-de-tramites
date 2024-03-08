@@ -44,6 +44,24 @@ class UserController extends Controller
         return view('users.edit', compact('user', 'roles'));
     }
 
+
+    public function update(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'is_active' => 'required|boolean',
+            'role' => 'required|string|exists:roles,name',
+        ]);
+
+        $user->update($request->only('name', 'is_active'));
+
+        // Asignar el rol (sobrescribe cualquier rol anterior)
+        $user->syncRoles($request->role);
+
+        return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
+    }
+
+
     public function destroy(User $user)
     {
         $user->delete();
