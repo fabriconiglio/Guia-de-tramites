@@ -52,12 +52,17 @@
                                 </li>
                             @endif
                         @else
-                            <!-- Añadir aquí el enlace al módulo de usuarios -->
                             @role('Usuario Administrador del Sistema')
+                            <!-- Añadir aquí el enlace al módulo de usuarios -->
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('users.index') }}">Ver Usuarios</a>
                             </li>
+                            <!-- Añadir aquí el enlace al módulo de áreas -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('areas.index') }}">Ver Áreas</a>
+                            </li>
                             @endrole
+                          
 
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

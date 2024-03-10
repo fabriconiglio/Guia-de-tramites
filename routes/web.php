@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AreaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,8 @@ Route::post('/password/update', [ChangePasswordController::class, 'update'])->na
 Route::middleware(['is_admin'])->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::resource('users', UserController::class);
+    Route::resource('areas', AreaController::class);
+
 });
 
 
