@@ -7,7 +7,7 @@
         <!-- Búsqueda -->
         <form method="GET" action="{{ route('users.index') }}">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" name="filter[name]" placeholder="Buscar" value="{{ request('filter.name') }}">
+                <input type="text" class="form-control" name="search" placeholder="Buscar" value="{{ request('search') }}">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="submit">Buscar</button>
                 </div>
@@ -42,7 +42,9 @@
                     <form action="{{ route('users.destroy', $user) }}" method="POST" style="display: inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de querer eliminar este usuario?');">
+                        Eliminar
+                        </button>
                     </form>
                 </td>
             </tr>
