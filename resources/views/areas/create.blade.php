@@ -62,3 +62,33 @@
     </form>
 </div>
 @endsection
+
+@section('scripts')
+<script>
+function initAutocomplete() {
+    // Obtener el elemento input para la dirección
+    const input = document.getElementById('direccion');
+    const options = {
+        fields: ["address_components", "geometry"],
+        types: ["address"],
+    };
+
+    // Crear el objeto autocomplete
+    const autocomplete = new google.maps.places.Autocomplete(input, options);
+
+    // Listener para manejar el evento de selección de dirección
+    autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+        if (!place.geometry) {
+            // El usuario seleccionó la opción "Enter address", que no es una predicción proporcionada por el autocompletado
+            window.alert("No details available for input: '" + place.name + "'");
+            return;
+        }
+
+        // Actualizar los campos de latitud y longitud
+        document.getElementById('lat').value = place.geometry.location.lat();
+        document.getElementById('lng').value = place.geometry.location.lng();
+    });
+}
+</script>
+@endsection
