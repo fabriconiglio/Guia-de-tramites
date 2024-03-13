@@ -2,14 +2,14 @@
     @foreach($areas as $area)
     <li>
         {{ $area->nombre }}
-        - <a href="{{ route('areas.edit', $area->id) }}">Editar</a>
-        - <form action="{{ route('areas.destroy', $area->id) }}" method="POST" style="display: inline;">
+        <a href="{{ route('areas.edit', $area->id) }}" class="btn btn-sm btn-info">Editar</a>
+        <form action="{{ route('areas.destroy', $area->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de querer eliminar esta área?');" style="display: inline;">
             @csrf
             @method('DELETE')
-            <button type="submit" onclick="return confirm('¿Estás seguro de querer eliminar esta área?')">Eliminar</button>
+            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
         </form>
 
-        @if(!$area->children->isEmpty())
+        @if($area->children)
             @include('areas.partials.list', ['areas' => $area->children])
         @endif
     </li>

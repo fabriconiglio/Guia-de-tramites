@@ -10,23 +10,26 @@ class AreaController extends Controller
     
     public function index(Request $request)
     {
-        // Iniciar la consulta para obtener todas las áreas
-        $query = Area::with('parent');
-
-        // Aplicar filtro de búsqueda si 'search' es parte de la solicitud
+        // Si hay una búsqueda, obtener todas las áreas que coincidan, si no, solo las áreas de nivel superior
         if ($search = $request->input('search')) {
-            $query->where('nombre', 'like', "%{$search}%")
+            $query = Area::with('parent', 'children')->where(function($q) use ($search) {
+                $q->where('nombre', 'like', "%{$search}%")
                 ->orWhere('direccion', 'like', "%{$search}%")
                 ->orWhere('email', 'like', "%{$search}%")
                 ->orWhereHas('parent', function($q) use ($search) {
                     $q->where('nombre', 'like', "%{$search}%");
                 });
+            });
+        } else {
+            // Si no hay búsqueda, obtener solo las áreas de nivel superior
+            $query = Area::whereNull('area_id')->with('children');
         }
 
+        // Paginar los resultados
         $areas = $query->paginate();
+
         return view('areas.index', compact('areas'));
     }
-
 
     public function create()
     {
