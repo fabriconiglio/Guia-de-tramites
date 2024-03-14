@@ -54,5 +54,30 @@ class AreaController extends Controller
 
         return redirect()->route('areas.index')->with('success', 'Área creada con éxito.');
     }
+
+    public function edit(Area $area)
+    {
+        $areas = Area::whereNull('area_id')->get();
+
+        return view('areas.create', compact('area', 'areas'));
+    }
+
+    public function update(Request $request, Area $area)
+    {
+        $validatedData = $request->validate([
+            'area_id' => 'nullable|exists:areas,id',
+            'nombre' => 'required|string|max:255',
+            'direccion' => 'required|string|max:255',
+            'lat' => 'nullable|numeric',
+            'lng' => 'nullable|numeric',
+            'email' => 'nullable|email|max:255',
+            'telefono' => 'nullable|string|max:255',
+            'horario' => 'nullable|string|max:255',
+        ]);
+
+        $area->update($validatedData);
+
+        return redirect()->route('areas.index')->with('success', 'Área actualizada con éxito.');
+    }
     
 }
