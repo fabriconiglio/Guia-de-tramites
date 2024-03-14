@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Area;
 use Illuminate\Http\Request;
+use Exception;
 
 class AreaController extends Controller
 {
@@ -78,6 +79,26 @@ class AreaController extends Controller
         $area->update($validatedData);
 
         return redirect()->route('areas.index')->with('success', 'Área actualizada con éxito.');
+    }
+
+    public function destroy(Area $area)
+    {
+        try {
+            // Verificar si el área tiene subáreas o dependencias
+            if ($area->children()->exists()) {
+                // Prohibir eliminación y enviar mensaje de error
+                return back()->withErrors('Esta área tiene subáreas dependientes y no puede ser eliminada.');
+            }
+
+            // Si no hay dependencias, eliminar el área
+            $area->delete();
+            
+            return redirect()->route('areas.index')->with('success', 'Área eliminada con éxito.');
+
+        } catch (Exception $e) {
+            // En caso de error, enviar mensaje de error
+            return back()->withErrors('Ocurrió un error al intentar eliminar el área.');
+        }
     }
     
 }
