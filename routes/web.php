@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TramiteController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
@@ -42,7 +43,7 @@ Route::middleware(['is_admin'])->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::resource('users', UserController::class);
     Route::resource('areas', AreaController::class);
-
+    Route::resource('tramites', TramiteController::class);
 });
 
 

@@ -63,8 +63,12 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('areas.index') }}">Ver Áreas</a>
                             </li>
+                            <!-- Añadir aquí el enlace al módulo de trámites -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('tramites.index') }}">Ver Trámites</a>
+                            </li>
                             @endrole
-                          
+
 
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
