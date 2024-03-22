@@ -9,7 +9,7 @@ class CreateCategoriesTable extends Migration
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->id('category_id');
+            $table->id();
             $table->boolean('status')->default(true);
             $table->string('slug');
             $table->string('image')->nullable();

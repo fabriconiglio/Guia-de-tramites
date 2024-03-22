@@ -9,15 +9,32 @@ class Tramite extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'titulo',
         'area_id',
-        'categoria',
-        'estado',
+        'category_id',
+        'status',
+        'title',
+        'slug',
+        'summary',
+        'procedure',
+        'requirements',
+        'who',
+        'when',
+        'previous',
+        'cost',
+        'online',
+        'url',
+        'time',
+        'more',
     ];
 
     public function area()
     {
         return $this->belongsTo(Area::class, 'area_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Categorie::class, 'category_id');
     }
 
 }

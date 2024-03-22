@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
+use App\Models\Categorie;
 use App\Models\Tramite;
 use Illuminate\Http\Request;
 
@@ -9,14 +11,63 @@ class TramiteController extends Controller
 {
     public function index(Request $request)
     {
-        $tramites = Tramite::with('area')
+        $tramites = Tramite::with('area', 'category')
         ->when($request->search, function ($query) use ($request) {
-            return $query->where('titulo', 'like', '%'.$request->search.'%')
-                ->orWhere('categoria', 'like', '%'.$request->search.'%');
+
+            $query->where('title', 'like', '%'.$request->search.'%');
+
+            $query->orWhereHas('area', function ($query) use ($request) {
+                $query->where('name', 'like', '%'.$request->search.'%');
+            });
+
+            $query->orWhereHas('category', function ($query) use ($request) {
+                $query->where('title', 'like', '%'.$request->search.'%');
+            });
+
         })
-            ->orderBy('titulo', 'asc')
+            ->orderBy('title', 'asc')
             ->paginate(10);
 
         return view('tramites.index', compact('tramites'));
+    }
+
+
+    public function create()
+    {
+        $areas = Area::all();
+        $categories = Categorie::all();
+        return view('tramites.create', compact('areas', 'categories'));
+    }
+
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'area_id' => 'required|exists:areas,id',
+            'category_id' => 'required|exists:categories,id',
+            'status' => 'required|boolean',
+            'slug' => 'required|string|max:255|unique:tramites',
+            'summary' => 'nullable|string',
+            'procedure' => 'nullable|string',
+            'requirements' => 'nullable|string',
+            'who' => 'nullable|string|max:255',
+            'when' => 'nullable|string|max:255',
+            'previous' => 'nullable|string|max:255',
+            'cost' => 'required|boolean',
+            'online' => 'required|boolean',
+            'url' => 'nullable|url',
+            'time' => 'nullable|string|max:255',
+            'more' => 'nullable|string',
+        ]);
+
+        $tramite = Tramite::create($validatedData);
+
+        return redirect()->route('tramites.show', $tramite->id)
+            ->with('success', 'Trámite creado con éxito. ¿Desea crear otro?');
+    }
+
+    public function show(Tramite $tramite)
+    {
+        return view('tramites.show', compact('tramite'));
     }
 }

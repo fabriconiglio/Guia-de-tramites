@@ -28,10 +28,10 @@
             <tbody>
             @foreach($tramites as $tramite)
                 <tr>
-                    <td>{{ $tramite->titulo }}</td>
+                    <td>{{ $tramite->title }}</td>
                     <td>{{ $tramite->area->nombre }}</td>
-                    <td>{{ $tramite->categoria }}</td>
-                    <td>{{ $tramite->estado }}</td>
+                    <td>{{ $tramite->category->name}}</td>
+                    <td>{{ $tramite->status ? 'Activo' : 'Inactivo' }}</td>
                     <td>{{ $tramite->updated_at->toFormattedDateString() }}</td>
                     <td>
                         <a href="{{ route('tramites.edit', $tramite->id) }}" class="btn btn-sm btn-primary">Editar</a>
