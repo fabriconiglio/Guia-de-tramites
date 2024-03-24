@@ -44,6 +44,7 @@ Route::middleware(['is_admin'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('areas', AreaController::class);
     Route::resource('tramites', TramiteController::class);
+    Route::get('/tramites/show_update/{id}', [TramiteController::class, 'show_update'])->name('tramites.show_update');
 });
 
 

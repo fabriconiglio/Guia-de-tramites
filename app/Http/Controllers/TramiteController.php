@@ -12,25 +12,24 @@ class TramiteController extends Controller
     public function index(Request $request)
     {
         $tramites = Tramite::with('area', 'category')
-        ->when($request->search, function ($query) use ($request) {
+            ->when($request->search, function ($query) use ($request) {
 
-            $query->where('title', 'like', '%'.$request->search.'%');
-
-            $query->orWhereHas('area', function ($query) use ($request) {
-                $query->where('name', 'like', '%'.$request->search.'%');
-            });
-
-            $query->orWhereHas('category', function ($query) use ($request) {
                 $query->where('title', 'like', '%'.$request->search.'%');
-            });
 
-        })
+                $query->orWhereHas('area', function ($query) use ($request) {
+                    $query->where('nombre', 'like', '%'.$request->search.'%'); // Asegúrate de que 'name' es correcto
+                });
+
+                $query->orWhereHas('category', function ($query) use ($request) {
+                    $query->where('name', 'like', '%'.$request->search.'%'); // Corregido de 'title' a 'name'
+                });
+
+            })
             ->orderBy('title', 'asc')
             ->paginate(10);
 
         return view('tramites.index', compact('tramites'));
     }
-
 
     public function create()
     {
@@ -47,7 +46,7 @@ class TramiteController extends Controller
             'category_id' => 'required|exists:categories,id',
             'status' => 'required|boolean',
             'slug' => 'required|string|max:255|unique:tramites',
-            'summary' => 'nullable|string',
+            'summary' => 'required|string',
             'procedure' => 'nullable|string',
             'requirements' => 'nullable|string',
             'who' => 'nullable|string|max:255',
@@ -69,5 +68,44 @@ class TramiteController extends Controller
     public function show(Tramite $tramite)
     {
         return view('tramites.show', compact('tramite'));
+    }
+
+    public function edit(Tramite $tramite)
+    {
+        $areas = Area::all();
+        $categories = Categorie::all();
+        return view('tramites.edit', compact('tramite', 'areas', 'categories'));
+    }
+
+    public function update(Request $request, Tramite $tramite)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'area_id' => 'required|exists:areas,id',
+            'category_id' => 'required|exists:categories,id',
+            'status' => 'required|boolean',
+            'slug' => 'required|string|max:255|unique:tramites',
+            'summary' => 'required|string',
+            'procedure' => 'nullable|string',
+            'requirements' => 'nullable|string',
+            'who' => 'nullable|string|max:255',
+            'when' => 'nullable|string|max:255',
+            'previous' => 'nullable|string|max:255',
+            'cost' => 'required|boolean',
+            'online' => 'required|boolean',
+            'url' => 'nullable|url',
+            'time' => 'nullable|string|max:255',
+            'more' => 'nullable|string',
+        ]);
+
+        $tramite->update($validatedData);
+
+        return redirect()->route('tramites.show_update', $tramite->id)
+            ->with('success', 'Trámite actualizado con éxito.');
+    }
+
+    public function show_update(Tramite $tramite)
+    {
+        return view('tramites.show_update', compact('tramite'));
     }
 }

@@ -8,26 +8,28 @@ use Exception;
 
 class AreaController extends Controller
 {
-    
+
     public function index(Request $request)
     {
-        // Si hay una búsqueda, obtener todas las áreas que coincidan, si no, solo las áreas de nivel superior
-        if ($search = $request->input('search')) {
-            $query = Area::with('parent', 'children')->where(function($q) use ($search) {
+        $search = $request->input('search');
+
+        $query = Area::whereNull('area_id');
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                // Primero, busca coincidencias en las áreas padre
                 $q->where('nombre', 'like', "%{$search}%")
-                ->orWhere('direccion', 'like', "%{$search}%")
-                ->orWhere('email', 'like', "%{$search}%")
-                ->orWhereHas('parent', function($q) use ($search) {
-                    $q->where('nombre', 'like', "%{$search}%");
-                });
+                    ->orWhere('direccion', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            })->orWhereHas('children', function($q) use ($search) {
+                // Luego, busca coincidencias en las áreas hijos
+                $q->where('nombre', 'like', "%{$search}%")
+                    ->orWhere('direccion', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
             });
-        } else {
-            // Si no hay búsqueda, obtener solo las áreas de nivel superior
-            $query = Area::whereNull('area_id')->with('children');
         }
 
-        // Paginar los resultados
-        $areas = $query->paginate();
+        $areas = $query->with('children')->paginate(10);
 
         return view('areas.index', compact('areas'));
     }
@@ -44,8 +46,8 @@ class AreaController extends Controller
             'area_id' => 'nullable|exists:areas,id',
             'nombre' => 'required|string|max:255',
             'direccion' => 'required|string|max:255',
-            'lat' => 'nullable|numeric', 
-            'lng' => 'nullable|numeric', 
+            'lat' => 'nullable|numeric',
+            'lng' => 'nullable|numeric',
             'email' => 'nullable|email|max:255',
             'telefono' => 'nullable|string|max:255',
             'horario' => 'nullable|string|max:255',
@@ -92,7 +94,7 @@ class AreaController extends Controller
 
             // Si no hay dependencias, eliminar el área
             $area->delete();
-            
+
             return redirect()->route('areas.index')->with('success', 'Área eliminada con éxito.');
 
         } catch (Exception $e) {
@@ -100,5 +102,5 @@ class AreaController extends Controller
             return back()->withErrors('Ocurrió un error al intentar eliminar el área.');
         }
     }
-    
+
 }

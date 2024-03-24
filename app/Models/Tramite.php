@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
+
 
 class Tramite extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'area_id',
         'category_id',
@@ -26,6 +29,19 @@ class Tramite extends Model
         'time',
         'more',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($tramite) {
+            // Generar y asignar el slug antes de guardar
+            if (empty($tramite->slug)) {
+                $tramite->slug = Str::slug($tramite->title);
+            }
+        });
+    }
+
 
     public function area()
     {

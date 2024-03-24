@@ -6,7 +6,7 @@
 
     <!-- Botón para crear nueva área -->
     <a href="{{ route('areas.create') }}" class="btn btn-primary mb-3">Crear Nueva Área</a>
-    
+
     <!-- Búsqueda de Áreas -->
     <form method="GET" action="{{ route('areas.index') }}">
         <div class="input-group mb-3">
@@ -89,7 +89,7 @@
 
     <!-- Paginación -->
     <div class="mt-3">
-        {{ $areas->links() }}
+        {{ $areas->links('vendor.pagination.bootstrap-4') }}
     </div>
 </div>
 @endsection

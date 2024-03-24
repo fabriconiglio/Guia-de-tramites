@@ -45,6 +45,6 @@
             @endforeach
             </tbody>
         </table>
-        {{ $tramites->links() }}
+        {{ $tramites->links('vendor.pagination.bootstrap-4') }}
     </div>
 @endsection
