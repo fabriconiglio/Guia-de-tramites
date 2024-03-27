@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-
-class Tramite extends Model
+class Tramite extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, InteractsWithMedia;
+
     protected $fillable = [
         'area_id',
         'category_id',
@@ -35,13 +37,11 @@ class Tramite extends Model
         parent::boot();
 
         static::saving(function ($tramite) {
-            // Generar y asignar el slug antes de guardar
             if (empty($tramite->slug)) {
                 $tramite->slug = Str::slug($tramite->title);
             }
         });
     }
-
 
     public function area()
     {
@@ -53,4 +53,11 @@ class Tramite extends Model
         return $this->belongsTo(Categorie::class, 'category_id');
     }
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('documentos')
+            ->acceptsFile(function ($file) {
+                return in_array($file->mimeType, ['application/pdf', 'image/jpeg', 'image/png']);
+            });
+    }
 }

@@ -12,6 +12,7 @@
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.0",
+        "spatie/laravel-medialibrary": "^8.0",
         "spatie/laravel-permission": "^6.4",
         "spatie/laravel-query-builder": "^3.11.0"
     },

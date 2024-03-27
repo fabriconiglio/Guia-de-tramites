@@ -45,6 +45,7 @@ Route::middleware(['is_admin'])->group(function () {
     Route::resource('areas', AreaController::class);
     Route::resource('tramites', TramiteController::class);
     Route::get('/tramites/show_update/{id}', [TramiteController::class, 'show_update'])->name('tramites.show_update');
+    Route::get('/tramites/{tramite}/media/{mediaId}', [TramiteController::class, 'destroyMedia'])->name('tramites.media.destroy');
 });
 
 

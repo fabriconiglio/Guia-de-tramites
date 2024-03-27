@@ -14,7 +14,7 @@
             </div>
         @endif
 
-        <form action="{{ route('tramites.store') }}" method="POST">
+        <form action="{{ route('tramites.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group mb-3">
                 <label for="title">Título del Trámite:</label>
@@ -104,6 +104,12 @@
             <div class="form-group mb-3">
                 <label for="more">Más información:</label>
                 <textarea class="form-control" id="more" name="more">{{ old('more') }}</textarea>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="documentos">Subir Nuevos Documentos:</label>
+                <input type="file" class="form-control" id="documentos" name="documentos[]" multiple>
+                <small class="form-text text-muted">Tipos de archivo permitidos: PDF, JPG, PNG. Máximo 2MB por archivo.</small>
             </div>
 
             <button type="submit" class="btn btn-success">Crear Trámite</button>

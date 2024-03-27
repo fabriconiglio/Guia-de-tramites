@@ -14,7 +14,7 @@
             </div>
         @endif
 
-        <form action="{{ route('tramites.update', $tramite->id) }}" method="POST">
+        <form action="{{ route('tramites.update', $tramite->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
             <div class="form-group mb-3">
@@ -104,6 +104,22 @@
             <div class="form-group mb-3">
                 <label for="more">Más información:</label>
                 <textarea class="form-control" id="more" name="more">{{ old('more', $tramite->more) }}</textarea>
+            </div>
+
+            <div class="form-group mb-3">
+                <label>Documentos Actuales:</label>
+                @foreach($tramite->getMedia('documentos') as $documento)
+                    <div class="mb-2">
+                        <a href="{{ $documento->getUrl() }}" target="_blank">{{ $documento->file_name }}</a>
+                        <a href="{{ route('tramites.media.destroy', ['tramite' => $tramite->id, 'mediaId' => $documento->id]) }}" class="text-danger" onclick="return confirm('¿Está seguro que desea eliminar este documento?');">Eliminar</a>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="documentos">Subir Nuevos Documentos:</label>
+                <input type="file" class="form-control" id="documentos" name="documentos[]" multiple>
+                <small class="form-text text-muted">Tipos de archivo permitidos: PDF, JPG, PNG. Máximo 2MB por archivo.</small>
             </div>
 
             <button type="submit" class="btn btn-success">Actualizar Trámite</button>
