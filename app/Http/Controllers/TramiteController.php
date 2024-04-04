@@ -119,6 +119,14 @@ class TramiteController extends Controller
             ->with('success', 'Trámite actualizado con éxito.');
     }
 
+    public function destroy(Tramite $tramite)
+    {
+        $tramite->delete();
+
+        return redirect()->route('tramites.index')
+            ->with('success', 'Trámite eliminado con éxito.');
+    }
+
     public function show_update(Tramite $tramite)
     {
         return view('tramites.show_update', compact('tramite'));
