@@ -51,6 +51,7 @@ class AreaController extends Controller
             'email' => 'nullable|email|max:255',
             'telefono' => 'nullable|string|max:255',
             'horario' => 'nullable|string|max:255',
+            'status' => 'required|boolean',
         ]);
 
         Area::create($validatedData);
@@ -76,6 +77,8 @@ class AreaController extends Controller
             'email' => 'nullable|email|max:255',
             'telefono' => 'nullable|string|max:255',
             'horario' => 'nullable|string|max:255',
+            'status' => 'required|boolean',
+            'slug' => 'required|string|max:255|unique:areas,slug,' . $area->id,
         ]);
 
         $area->update($validatedData);

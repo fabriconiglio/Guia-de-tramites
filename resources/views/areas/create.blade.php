@@ -23,37 +23,51 @@
 
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $area->nombre ?? '' }}" required>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ old('nombre', $area->nombre) }}" required>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="status">Estado:</label>
+            <select class="form-control" id="status" name="status" required>
+                <option value="1" {{ old('status', $area->status) == 1 ? 'selected' : '' }}>Activo</option>
+                <option value="0" {{ old('status', $area->status) == 0 ? 'selected' : '' }}>Inactivo</option>
+            </select>
+        </div>
+
+
+        <div class="form-group mb-3">
+            <label for="slug">Slug:</label>
+            <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug', $area->slug) }}" readonly>
         </div>
 
         <div class="mb-3">
             <label for="direccion" class="form-label">Dirección</label>
-            <input type="text" class="form-control" id="direccion" name="direccion" value="{{ $area->direccion ?? '' }}" required>
+            <input type="text" class="form-control" id="direccion" name="direccion" value="{{ old('direccion', $area->direccion) }}">
         </div>
 
         <div class="mb-3">
             <label for="telefono" class="form-label">Teléfono</label>
-            <input type="text" class="form-control" id="telefono" name="telefono" value="{{ $area->telefono ?? '' }}">
+            <input type="text" class="form-control" id="telefono" name="telefono" value="{{ old('telefono', $area->telefono) }}">
         </div>
 
         <div class="mb-3">
             <label for="email" class="form-label">E-mail</label>
-            <input type="email" class="form-control" id="email" name="email" value="{{ $area->email ?? '' }}">
+            <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $area->email) }}">
         </div>
 
         <div class="mb-3">
             <label for="lat" class="form-label">Latitud</label>
-            <input type="text" class="form-control" id="lat" name="lat" value="{{ $area->lat ?? '' }}">
+            <input type="text" class="form-control" id="lat" name="lat" value="{{ old('lat', $area->lat) }}">
         </div>
 
         <div class="mb-3">
             <label for="lng" class="form-label">Longitud</label>
-            <input type="text" class="form-control" id="lng" name="lng" value="{{ $area->lng ?? '' }}">
+            <input type="text" class="form-control" id="lng" name="lng" value="{{ old('lng', $area->lng) }}">
         </div>
 
         <div class="mb-3">
             <label for="horario" class="form-label">Horario</label>
-            <input type="text" class="form-control" id="horario" name="horario" value="{{ $area->horario ?? '' }}">
+            <input type="text" class="form-control" id="horario" name="horario" value="{{ old('horario', $area->horario) }}">
         </div>
 
 
@@ -90,5 +104,17 @@ function initAutocomplete() {
         document.getElementById('lng').value = place.geometry.location.lng();
     });
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById('nombre').addEventListener('input', function() {
+        const title = this.value;
+        const slugField = document.getElementById('slug');
+        slugField.value = title
+            .toLowerCase()
+            .replace(/[^a-z0-9 -]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
+    });
+});
 </script>
 @endsection
