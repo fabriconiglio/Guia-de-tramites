@@ -52,6 +52,7 @@ class AreaController extends Controller
             'phone' => 'nullable|string|max:255',
             'opening_hours' => 'nullable|string|max:255',
             'status' => 'required|boolean',
+            'slug' => 'required|string|max:255|unique:areas',
         ]);
 
         Area::create($validatedData);
@@ -63,7 +64,7 @@ class AreaController extends Controller
     {
         $areas = Area::whereNull('area_id')->get();
 
-        return view('areas.create', compact('area', 'areas'));
+        return view('areas.edit', compact('area', 'areas'));
     }
 
     public function update(Request $request, Area $area)

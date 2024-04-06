@@ -2,19 +2,17 @@
 
 @section('content')
 <div class="container">
-    <h1>{{ isset($area) ? 'Editar Área' : 'Crear Nueva Área' }}</h1>
-    <form action="{{ isset($area) ? route('areas.update', $area) : route('areas.store') }}" method="POST">
+    <h1>Editar Área</h1>
+    <form action="{{ route('areas.update', $area) }}" method="POST">
         @csrf
-        @if(isset($area))
-            @method('PUT')
-        @endif
+        @method('PATCH')
 
         <div class="mb-3">
             <label for="area_id" class="form-label">Área Padre</label>
             <select class="form-control" id="area_id" name="area_id">
                 <option value="">Ninguna</option>
                 @foreach($areas as $areaPadre)
-                    <option value="{{ $areaPadre->id }}" @if(isset($area) && $area->area_id === $areaPadre->id) selected @endif>
+                    <option value="{{ $areaPadre->id }}" {{ old('area_id', $area->area_id) == $areaPadre->id ? 'selected' : '' }}>
                         {{ $areaPadre->name }}
                     </option>
                 @endforeach
@@ -23,56 +21,56 @@
 
         <div class="mb-3">
             <label for="name" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ old('nombre') }}" required>
+            <input type="text" class="form-control" id="name" name="name" value="{{ old('nombre', $area->name) }}" required>
         </div>
 
         <div class="form-group mb-3">
             <label for="status">Estado:</label>
             <select class="form-control" id="status" name="status" required>
-                <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Activo</option>
-                <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Inactivo</option>
+                <option value="1" {{ old('status', $area->status) == 1 ? 'selected' : '' }}>Activo</option>
+                <option value="0" {{ old('status', $area->status) == 0 ? 'selected' : '' }}>Inactivo</option>
             </select>
         </div>
 
 
         <div class="form-group mb-3">
             <label for="slug">Slug:</label>
-            <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug') }}" readonly>
+            <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug', $area->slug) }}" readonly>
         </div>
 
         <div class="mb-3">
             <label for="address" class="form-label">Dirección</label>
-            <input type="text" class="form-control" id="address" name="address" value="{{ old('direccion') }}">
+            <input type="text" class="form-control" id="address" name="address" value="{{ old('direccion', $area->address) }}">
         </div>
 
         <div class="mb-3">
             <label for="phone" class="form-label">Teléfono</label>
-            <input type="text" class="form-control" id="phone" name="phone" value="{{ old('telefono') }}">
+            <input type="text" class="form-control" id="phone" name="phone" value="{{ old('telefono', $area->phone) }}">
         </div>
 
         <div class="mb-3">
             <label for="email" class="form-label">E-mail</label>
-            <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
+            <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $area->email) }}">
         </div>
 
         <div class="mb-3">
             <label for="lat" class="form-label">Latitud</label>
-            <input type="text" class="form-control" id="lat" name="lat" value="{{ old('lat') }}">
+            <input type="text" class="form-control" id="lat" name="lat" value="{{ old('lat', $area->lat) }}">
         </div>
 
         <div class="mb-3">
             <label for="lng" class="form-label">Longitud</label>
-            <input type="text" class="form-control" id="lng" name="lng" value="{{ old('lng') }}">
+            <input type="text" class="form-control" id="lng" name="lng" value="{{ old('lng', $area->lng) }}">
         </div>
 
         <div class="mb-3">
             <label for="opening_hours" class="form-label">Horario</label>
-            <input type="text" class="form-control" id="opening_hours" name="opening_hours" value="{{ old('horario') }}">
+            <input type="text" class="form-control" id="opening_hours" name="opening_hours" value="{{ old('horario', $area->opening_hours) }}">
         </div>
 
 
         <button type="button" class="btn btn-secondary" onclick="window.history.back();">Cancelar</button>
-        <button type="submit" class="btn btn-primary">{{ isset($area) ? 'Actualizar' : 'Crear' }}</button>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
     </form>
 </div>
 @endsection

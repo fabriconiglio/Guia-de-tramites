@@ -15,12 +15,12 @@ class AddStatusSlugToAreasTable extends Migration
     {
         Schema::table('areas', function (Blueprint $table) {
             $table->tinyInteger('status')->default(1)->after('area_id');
-            $table->string('slug')->unique()->after('nombre');
+            $table->string('slug')->unique()->after('name');
         });
 
         $areas = \App\Models\Area::all();
         foreach ($areas as $area) {
-            $area->slug = \Illuminate\Support\Str::slug($area->nombre);
+            $area->slug = \Illuminate\Support\Str::slug($area->name);
             $area->save();
         }
     }
