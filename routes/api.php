@@ -26,3 +26,4 @@ Route::post('/login', [ApiAuthController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/areas/{area}', [AreaController::class, 'show']);
 Route::middleware('auth:sanctum')->get('/categories', [CategorieController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/tramites/{slug}', [TramiteController::class, 'show']);
+Route::middleware('auth:sanctum')->get('/tramites', [TramiteController::class, 'index']);
