@@ -11,7 +11,7 @@ class Area extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['area_id', 'nombre', 'direccion', 'lat', 'lng', 'email', 'telefono', 'horario', 'status', 'slug'];
+    protected $fillable = ['area_id', 'name', 'address', 'lat', 'lng', 'email', 'phone', 'opening_hours', 'status', 'slug'];
 
     protected static function boot()
     {

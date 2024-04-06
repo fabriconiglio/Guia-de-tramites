@@ -22,8 +22,8 @@
         </div>
 
         <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ old('nombre', $area->nombre) }}" required>
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ old('nombre', $area->nombre) }}" required>
         </div>
 
         <div class="form-group mb-3">
@@ -41,13 +41,13 @@
         </div>
 
         <div class="mb-3">
-            <label for="direccion" class="form-label">Dirección</label>
-            <input type="text" class="form-control" id="direccion" name="direccion" value="{{ old('direccion', $area->direccion) }}">
+            <label for="address" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="address" name="address" value="{{ old('direccion', $area->address) }}">
         </div>
 
         <div class="mb-3">
-            <label for="telefono" class="form-label">Teléfono</label>
-            <input type="text" class="form-control" id="telefono" name="telefono" value="{{ old('telefono', $area->telefono) }}">
+            <label for="phone" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="phone" name="phone" value="{{ old('telefono', $area->phone) }}">
         </div>
 
         <div class="mb-3">
@@ -66,8 +66,8 @@
         </div>
 
         <div class="mb-3">
-            <label for="horario" class="form-label">Horario</label>
-            <input type="text" class="form-control" id="horario" name="horario" value="{{ old('horario', $area->horario) }}">
+            <label for="opening_hours" class="form-label">Horario</label>
+            <input type="text" class="form-control" id="opening_hours" name="opening_hours" value="{{ old('horario', $area->opening_hours) }}">
         </div>
 
 
@@ -81,7 +81,7 @@
 <script>
 function initAutocomplete() {
     // Obtener el elemento input para la dirección
-    const input = document.getElementById('direccion');
+    const input = document.getElementById('address');
     const options = {
         fields: ["address_components", "geometry"],
         types: ["address"],

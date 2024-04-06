@@ -18,13 +18,13 @@ class AreaController extends Controller
         if ($search) {
             $query->where(function($q) use ($search) {
                 // Primero, busca coincidencias en las áreas padre
-                $q->where('nombre', 'like', "%{$search}%")
-                    ->orWhere('direccion', 'like', "%{$search}%")
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             })->orWhereHas('children', function($q) use ($search) {
                 // Luego, busca coincidencias en las áreas hijos
-                $q->where('nombre', 'like', "%{$search}%")
-                    ->orWhere('direccion', 'like', "%{$search}%")
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             });
         }
@@ -44,13 +44,13 @@ class AreaController extends Controller
     {
         $validatedData = $request->validate([
             'area_id' => 'nullable|exists:areas,id',
-            'nombre' => 'required|string|max:255',
-            'direccion' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
             'lat' => 'nullable|numeric',
             'lng' => 'nullable|numeric',
             'email' => 'nullable|email|max:255',
-            'telefono' => 'nullable|string|max:255',
-            'horario' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:255',
+            'opening_hours' => 'nullable|string|max:255',
             'status' => 'required|boolean',
         ]);
 
@@ -70,13 +70,13 @@ class AreaController extends Controller
     {
         $validatedData = $request->validate([
             'area_id' => 'nullable|exists:areas,id',
-            'nombre' => 'required|string|max:255',
-            'direccion' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
             'lat' => 'nullable|numeric',
             'lng' => 'nullable|numeric',
             'email' => 'nullable|email|max:255',
-            'telefono' => 'nullable|string|max:255',
-            'horario' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:255',
+            'opening_hours' => 'nullable|string|max:255',
             'status' => 'required|boolean',
             'slug' => 'required|string|max:255|unique:areas,slug,' . $area->id,
         ]);

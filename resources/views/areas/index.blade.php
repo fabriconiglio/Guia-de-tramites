@@ -31,10 +31,10 @@
         <tbody>
             @foreach($areas as $area)
                 <tr class="table-primary">
-                    <td>{{ $area->nombre }}</td>
-                    <td>{{ $area->direccion }}</td>
+                    <td>{{ $area->name }}</td>
+                    <td>{{ $area->address }}</td>
                     <td>{{ $area->email }}</td>
-                    <td>{{ $area->telefono }}</td>
+                    <td>{{ $area->phone }}</td>
                     <td>
                         <a href="{{ route('areas.edit', $area->id) }}" class="btn btn-primary btn-sm">Editar</a>
                         <form action="{{ route('areas.destroy', $area->id) }}" method="POST" style="display: inline;">
@@ -49,10 +49,10 @@
                 @if($area->children)
                     @foreach($area->children as $child)
                         <tr>
-                            <td>{{ $child->nombre }}</td>
-                            <td>{{ $child->direccion }}</td>
+                            <td>{{ $child->name }}</td>
+                            <td>{{ $child->address }}</td>
                             <td>{{ $child->email }}</td>
-                            <td>{{ $child->telefono }}</td>
+                            <td>{{ $child->phone }}</td>
                             <td>
                                 <a href="{{ route('areas.edit', $child->id) }}" class="btn btn-primary btn-sm">Editar</a>
                                 <form action="{{ route('areas.destroy', $child->id) }}" method="POST" style="display: inline;">
