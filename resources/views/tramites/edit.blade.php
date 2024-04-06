@@ -27,7 +27,7 @@
                 <select class="form-control" id="area_id" name="area_id" required>
                     <option value="">Selecciona un área</option>
                     @foreach($areas as $area)
-                        <option value="{{ $area->id }}" {{ old('area_id', $tramite->area_id) == $area->id ? 'selected' : '' }}>{{ $area->nombre }}</option>
+                        <option value="{{ $area->id }}" {{ old('area_id', $tramite->area_id) == $area->id ? 'selected' : '' }}>{{ $area->name }}</option>
                     @endforeach
                 </select>
             </div>

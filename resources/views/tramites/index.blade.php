@@ -29,7 +29,7 @@
             @foreach($tramites as $tramite)
                 <tr>
                     <td>{{ $tramite->title }}</td>
-                    <td>{{ $tramite->area->nombre }}</td>
+                    <td>{{ $tramite->area->name }}</td>
                     <td>{{ $tramite->category->name}}</td>
                     <td>{{ $tramite->status ? 'Activo' : 'Inactivo' }}</td>
                     <td>{{ $tramite->updated_at->toFormattedDateString() }}</td>
